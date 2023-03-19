@@ -2,179 +2,174 @@ import styled from "@emotion/styled";
 import { useEffect } from "react";
 const MainPage = () => {
   useEffect(() => {
+    const listStyleChangeStartY = 373;
+    const listStyleChangeEndY = 1585;
 
-      const listStyleChangeStartY = 373;
-      const listStyleChangeEndY = 1585;
+    const listItems = document.querySelectorAll(".list-item");
 
-      const listItems = document.querySelectorAll(".list-item");
+    const division =
+      (listStyleChangeEndY - listStyleChangeStartY) / listItems.length;
 
-      const division =
-        (listStyleChangeEndY - listStyleChangeStartY) / listItems.length;
+    const panel1Img = document.getElementById("panel1-img");
+    const flyingSantaImage = document.getElementById("flying-santa-image");
 
-      const panel1Img = document.getElementById("panel1-img")!!;
-      const flyingSantaImage = document.getElementById("flying-santa-image")!!;
+    const videoPlayBack = 500;
 
-      const videoPlayBack = 500;
+    const videoElement = document.getElementById("video");
+    const videoSection = document.getElementById("video-section");
 
-      const videoElement = document.getElementById("video")!!;
-      const videoSection = document.getElementById("video-section")!!;
+    const fixedWrapper = document.getElementById("fixed-wrapper");
 
-      const fixedWrapper = document.getElementById("fixed-wrapper")!!;
+    const fixedDescription = document.getElementById("fixed-description");
 
-      const fixedDescription = document.getElementById("fixed-description");
+    function centerElement(elementId, video) {
+      const element = document.getElementById(elementId);
+      const parent = element.parentElement;
 
-      function centerElement(elementId: string, video?: any) {
-        const element = document.getElementById(elementId) !!;
-        const parent = element.parentElement!!;
+      if (
+        window.scrollY >
+        parent.offsetTop -
+          (document.documentElement.clientHeight - element.offsetHeight) / 2
+      ) {
+        element.style.position = "fixed";
+        element.style.top = "50%";
+        element.style.left = "50%";
+        element.style.transform = "translate(-50%, -50%)";
 
-        if (
-          window.scrollY >
-          parent.offsetTop -
-            (document.documentElement.clientHeight - element.offsetHeight) / 2
-        ) {
-          element.style.position = "fixed";
-          element.style.top = "50%";
-          element.style.left = "50%";
-          element.style.transform = "translate(-50%, -50%)";
+        if (video)
+          video.currentTime =
+            (window.scrollY - videoSection.offsetTop) / videoPlayBack;
+      } else {
+        element.style.position = "relative";
+        element.style.top = "initial";
+        element.style.left = "initial";
+        element.style.transform = "initial";
+      }
+    }
 
-          if (video)
-            video.currentTime =
-              (window.scrollY - videoSection.offsetTop) / videoPlayBack;
-        } else {
-          element.style.position = "relative";
-          element.style.top = "initial";
-          element.style.left = "initial";
-          element.style.transform = "initial";
-        }
+    videoElement.addEventListener("loadedmetadata", () => {
+      document.getElementById("video-section").style.height =
+        videoElement.duration * videoPlayBack + "px";
+    });
+
+    const fixedDescriptionAppearTiming = 3470;
+    const fixedDescriptionAppearEnds = 3800;
+
+    window.addEventListener("scroll", () => {
+      if (document.getElementById("on"))
+        document.getElementById("on").removeAttribute("id");
+
+      if (
+        window.scrollY > listStyleChangeStartY &&
+        window.scrollY < listStyleChangeEndY
+      ) {
+        const targetIndex = Math.round(
+          (window.scrollY - listStyleChangeStartY) / division
+        );
+
+        if (listItems[targetIndex]) listItems[targetIndex].id = "on";
       }
 
-      videoElement.addEventListener("loadedmetadata", () => {
-        document.getElementById("video-section").style.height =
-          videoElement.duration * videoPlayBack + "px";
-      });
+      const scrollYBottom =
+        window.scrollY + document.documentElement.clientHeight;
 
-      const fixedDescriptionAppearTiming = 3470;
-      const fixedDescriptionAppearEnds = 3800;
+      if (
+        scrollYBottom > panel1Img.offsetTop &&
+        scrollYBottom < panel1Img.offsetTop + panel1Img.offsetHeight + 100
+      ) {
+        const translateX =
+          80 -
+          (80 * 1.3 * (scrollYBottom - panel1Img.offsetTop)) /
+            (panel1Img.offsetHeight + 100);
+        const translateY =
+          -13 +
+          (13 * (scrollYBottom - panel1Img.offsetTop)) /
+            (panel1Img.offsetHeight + 100);
 
-      window.addEventListener("scroll", () => {
-        if (document.getElementById("on"))
-          document.getElementById("on").removeAttribute("id");
+        const rotationDegree =
+          23 -
+          (23 * 1.7 * (scrollYBottom - panel1Img.offsetTop)) /
+            (panel1Img.offsetHeight + 100);
 
-        if (
-          window.scrollY > listStyleChangeStartY &&
-          window.scrollY < listStyleChangeEndY
-        ) {
-          const targetIndex = Math.round(
-            (window.scrollY - listStyleChangeStartY) / division
-          );
+        flyingSantaImage.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotationDegree}deg)`;
+      }
 
-          if (listItems[targetIndex]) listItems[targetIndex].id = "on";
-        }
+      centerElement("fixed-wrapper", videoElement);
 
-        const scrollYBottom =
-          window.scrollY + document.documentElement.clientHeight;
+      if (
+        window.scrollY >
+        videoSection.offsetTop +
+          videoSection.offsetHeight -
+          (fixedWrapper.offsetHeight +
+            (document.documentElement.clientHeight -
+              fixedWrapper.offsetHeight) /
+              2)
+      ) {
+        fixedWrapper.style.position = "relative";
+        fixedWrapper.style.top = "initial";
+        fixedWrapper.style.left = "initial";
+        fixedWrapper.style.transform = `translateY(${
+          videoSection.offsetHeight - fixedWrapper.offsetHeight
+        }px)`;
+      }
 
-        if (
-          scrollYBottom > panel1Img.offsetTop &&
-          scrollYBottom < panel1Img.offsetTop + panel1Img.offsetHeight + 100
-        ) {
-          const translateX =
-            80 -
-            (80 * 1.3 * (scrollYBottom - panel1Img.offsetTop)) /
-              (panel1Img.offsetHeight + 100);
-          const translateY =
-            -13 +
-            (13 * (scrollYBottom - panel1Img.offsetTop)) /
-              (panel1Img.offsetHeight + 100);
+      if (
+        window.scrollY > fixedDescriptionAppearTiming &&
+        window.scrollY < fixedDescriptionAppearEnds
+      ) {
+        fixedDescription.style.transform = `translateY(${
+          fixedDescriptionAppearEnds - window.scrollY
+        }px)`;
 
-          const rotationDegree =
-            23 -
-            (23 * 1.7 * (scrollYBottom - panel1Img.offsetTop)) /
-              (panel1Img.offsetHeight + 100);
+        fixedDescription.style.opacity =
+          (window.scrollY - fixedDescriptionAppearTiming) / 300;
+      } else if (window.scrollY > fixedDescriptionAppearEnds) {
+        fixedDescription.style.transform = `translateY(0px)`;
+        fixedDescription.style.opacity = 1;
+      } else {
+        fixedDescription.style.transform = `translateY(100px)`;
+        fixedDescription.style.opacity = 0;
+      }
 
-          flyingSantaImage.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotationDegree}deg)`;
-        }
+      centerElement("bank-beyond");
+    });
 
-        centerElement("fixed-wrapper", videoElement);
+    let currentImage = 0;
 
-        if (
-          window.scrollY >
-          videoSection.offsetTop +
-            videoSection.offsetHeight -
-            (fixedWrapper.offsetHeight +
-              (document.documentElement.clientHeight -
-                fixedWrapper.offsetHeight) /
-                2)
-        ) {
-          console.log('video:')
-          fixedWrapper.style.position = "relative";
-          fixedWrapper.style.top = "initial";
-          fixedWrapper.style.left = "initial";
-          fixedWrapper.style.transform = `translateY(${
-            videoSection.offsetHeight - fixedWrapper.offsetHeight
-          }px)`;
-        }
+    const sliderImages = document.querySelectorAll(".slider-image");
 
-        if (
-          window.scrollY > fixedDescriptionAppearTiming &&
-          window.scrollY < fixedDescriptionAppearEnds
-        ) {
-          fixedDescription.style.transform = `translateY(${
-            fixedDescriptionAppearEnds - window.scrollY
-          }px)`;
+    const sliderIndex = document.getElementById("slider-index");
 
-          fixedDescription.style.opacity =
-            (window.scrollY - fixedDescriptionAppearTiming) / 300;
-        } else if (window.scrollY > fixedDescriptionAppearEnds) {
-          fixedDescription.style.transform = `translateY(0px)`;
-          fixedDescription.style.opacity = 1;
-        } else {
-          fixedDescription.style.transform = `translateY(100px)`;
-          fixedDescription.style.opacity = 0;
-        }
+    const handleSlideChange = (step) => {
+      currentImage += step;
 
-        centerElement("bank-beyond");
-      });
+      if (currentImage < 0) {
+        currentImage = sliderImages.length - 1;
+      } else if (currentImage >= sliderImages.length) {
+        currentImage = 0;
+      }
 
-      let currentImage = 0;
+      sliderContentWrapper.scrollLeft = sliderImages[currentImage].offsetLeft;
+    };
 
-      const sliderImages = document.querySelectorAll(".slider-image");
+    document.getElementById("left-button").addEventListener("click", () => {
+      handleSlideChange(-1);
+    });
+    document.getElementById("right-button").addEventListener("click", () => {
+      handleSlideChange(1);
+    });
 
-      const sliderIndex = document.getElementById("slider-index");
+    const sliderContentWrapper = document.getElementById(
+      "slider-content-wrapper"
+    );
 
-      const handleSlideChange = (step) => {
-        currentImage += step;
+    sliderContentWrapper.addEventListener("scroll", () => {
+      const imageWidth =
+        document.querySelectorAll(".slider-image")[0].offsetWidth;
 
-        if (currentImage < 0) {
-          currentImage = sliderImages.length - 1;
-        } else if (currentImage >= sliderImages.length) {
-          currentImage = 0;
-        }
-
-        sliderContentWrapper.scrollLeft = sliderImages[currentImage].offsetLeft;
-      };
-
-      document.getElementById("left-button").addEventListener("click", () => {
-        handleSlideChange(-1);
-      });
-      document.getElementById("right-button").addEventListener("click", () => {
-        handleSlideChange(1);
-      });
-
-      const sliderContentWrapper = document.getElementById(
-        "slider-content-wrapper"
-      );
-
-      sliderContentWrapper.addEventListener("scroll", () => {
-        const imageWidth =
-          document.querySelectorAll(".slider-image")[0].offsetWidth;
-
-        currentImage = Math.round(sliderContentWrapper.scrollLeft / imageWidth);
-        sliderIndex.innerText = `${currentImage + 1}/${sliderImages.length}`;
-      });
-    
-
-
+      currentImage = Math.round(sliderContentWrapper.scrollLeft / imageWidth);
+      sliderIndex.innerText = `${currentImage + 1}/${sliderImages.length}`;
+    });
   });
 
   return (
