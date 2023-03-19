@@ -54,9 +54,6 @@ body {
 #main-img-wrapper {
   padding-top: 139px;
   text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 #intro-main {
@@ -95,7 +92,6 @@ body {
 }
 
 #down-arrow-icon {
-  width: 33px;
   animation: upAndDown 1s infinite;
 }
 
@@ -112,7 +108,7 @@ body {
 
 .list-item::before {
   display: inline-block;
-  background-image: url('../images/icons/dark_house.png');
+  background-image: url('./icons/dark_house.png');
   background-size: 51px 53px;
   content: "";
   width: 51px;
@@ -124,7 +120,7 @@ body {
 }
 
 .list-item#on::before{
-  background-image: url('../images/icons/light_house.png');
+  background-image: url('./icons/light_house.png');
 }
 
 #panel1-img {

@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import Image from "next/image";
+
 import { useEffect } from "react";
 const MainPage = () => {
   useEffect(() => {
@@ -173,11 +175,12 @@ const MainPage = () => {
   });
 
   return (
-    <Container className="place-items-center">
+    <Container className="flex flex-col justify-center">
       <div id="main-img-wrapper">
-        <img
-          width="320"
-          src="./Lovepik_com-401339128-data-management-data-analysis-icon-free-vector-illustration-mate.png"
+        <Image
+          width={320}
+          height={100}
+          src="/assets/images/Lovepik_com-401339128-data-management-data-analysis-icon-free-vector-illustration-mate.png"
           alt="coding image"
         />
       </div>
@@ -185,9 +188,11 @@ const MainPage = () => {
         <p>이미 모두의 은행, 패스트뱅크</p>
         <p>함께 일해요.</p>
         <p id="join-us-text">Join us!</p>
-        <img
+        <Image
+          width={33}
+          height={33}
           id="down-arrow-icon"
-          src="./down-arrow.png"
+          src="/assets/images/down-arrow.png"
           alt="down arrow icon"
         />
       </div>
@@ -227,9 +232,11 @@ const MainPage = () => {
       </ul>
       <main>
         <section id="panel1-img">
-          <img
+          <Image
+            width={190}
+            height={310}
             id="flying-santa-image"
-            src="./santa_flying.png"
+            src="/assets/images/santa_flying.png"
             alt="santa flying"
           />
         </section>
@@ -250,7 +257,7 @@ const MainPage = () => {
         </section>
         <div id="bank-beyond-wrapper">
           <div id="bank-beyond">
-            <img width="315" src="./05-text.png" alt="sample text" />
+            <img width="315" src="/assets/images/05-text.png" alt="sample text" />
           </div>
         </div>
         <div id="white-wrapper">
@@ -290,4 +297,9 @@ const MainPage = () => {
 
 export default MainPage;
 
-const Container = styled.div``;
+const Container = styled.div`
+  background: #000000;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+`;
